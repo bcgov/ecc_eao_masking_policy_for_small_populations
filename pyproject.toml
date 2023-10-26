@@ -16,7 +16,7 @@ classifiers = [
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
-    "--cov=./scr",
+    "--cov=./src",
     "--cov-report=html:cover"
 ]
 
