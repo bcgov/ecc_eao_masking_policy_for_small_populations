@@ -75,7 +75,6 @@ def export_masked_data(masked_data: pd.DataFrame, input_file_path: str) -> None:
         writer.close()
     OutputClass.success(f'{output_file_path} is generated!')
 
-
 def get_partition_column_names(data_column_info_dict: dict) -> list[str]:
     '''
     Function to collect partition column names. Please see User_Guide.pdf for further information.
@@ -88,11 +87,13 @@ def get_partition_column_names(data_column_info_dict: dict) -> list[str]:
     '''
     partition_column_names: list[str] = []
     
-    OutputClass.info('''A Partition Column is a column that divides the data into groups, 
-                     where each group is separetely assessed for masking conditions.
-                     For example, "year" can be a Partition Column, where numbers for each year commonly subject to 
-                     masking policy in itself.''')
-    OutputClass.info('Type a Partition Column Number and hit enter. Type done to finish.')
+    OutputClass.info('''
+                     A Partition Column is a column that divides the data into groups, 
+                     where each group is separetely assessed for masking conditions. 
+                     For example, "year" can be a Partition Column, where numbers for 
+                     each year commonly subject to masking policy in itself.
+                     ''')
+    OutputClass.process('''Type a Partition Column Number and hit enter. Type done to finish.''')
     user_input: str = ''
     while user_input != 'done':
         user_input = InputClass.get_inp('Partition Column Number')
@@ -105,7 +106,6 @@ def get_partition_column_names(data_column_info_dict: dict) -> list[str]:
                 partition_column_names.append(data_column_info_dict[user_input])
 
     return partition_column_names
-
 
 def get_subcategory_column_names(data_column_info_dict: dict,
                                 partition_column_names: list) -> list[str]:
@@ -120,13 +120,13 @@ def get_subcategory_column_names(data_column_info_dict: dict,
         subcategory_column_names (list[str]): column names
     '''
     subcategory_column_names: list[str] = []
-    OutputClass.info('''Subcategory Column is a column that has options for a category in data. 
-                        For examples, "gender" is commonly a Subcategory Colum with options such as
-                        "Men", "Women", "Non-Binary", "All".
-                        Thus, the masking rotuine will assess the masking conditions among values of a given 
-                        Subcategory Column for each combinations of remaining Subcategory Columns. 
-                        This ensures that a data, whcih should be masked, cannot be revealed thorugh simple subtraction using "All" value.''')
-    OutputClass.info('Type a Subcategory Column Number and hit enter. Type done to finish.')
+    OutputClass.info('''
+                     Subcategory Column is a column that has options for a category in data. 
+                     For examples, "gender" is commonly a Subcategory Colum with options such as "Men", "Women", "Non-Binary", "All". 
+                     Thus, the masking rotuine will assess the masking conditions among values of a given 
+                     Subcategory Column for each combinations of remaining Subcategory Columns. 
+                     This ensures that a data, whcih should be masked, cannot be revealed thorugh simple subtraction using "All" value.''')
+    OutputClass.process('''Type a Subcategory Column Number and hit enter. Type done to finish''')
     user_input: str = ''
     while user_input != 'done':
         user_input = InputClass.get_inp('Subcategory Column Number')
@@ -140,7 +140,6 @@ def get_subcategory_column_names(data_column_info_dict: dict,
             else:
                 subcategory_column_names.append(data_column_info_dict[user_input])
     return subcategory_column_names
-
 
 def get_measure_column_names(data_column_info_dict: dict,
                                 partition_column_names: list,
@@ -158,11 +157,15 @@ def get_measure_column_names(data_column_info_dict: dict,
         measure_column_names (list[str]): column names
     '''
     measure_column_names: list[str] = []
-    OutputClass.info('''Measure Column is a column that containg actual headcounts and will be used to assess the masking conditions and
-                        be masked if these conditions are met.
-                        There can be multiple Measure Columns, which can be independent or related through a relation.''')
-    OutputClass.info('''Measure Columns Relation Type defines relation between Measure Columns for cross-assessment the masking conditions
-                        to avoid indirect violation of the masking policy.''')
+    OutputClass.info('''
+                     Measure Column is a column that containg actual headcounts and will be used to assess 
+                     the masking conditions and be masked if these conditions are met. 
+                     There can be multiple Measure Columns, which can be independent or related through a relation.
+                     ''')
+    OutputClass.info('''
+                     Measure Columns Relation Type defines relation between Measure Columns 
+                     for cross-assessment the masking conditions to avoid indirect violation of the masking policy.
+                     ''')
     measure_columns_realtion_type = InputClass.get_option('Options for Measure Columns Relation Type','Relation Type',\
                         {'0':'No Relation -> No Measure Columns are used to obtain another column.',
                          '1':'Rate -> Two Measure Columns are used to calculate a rate column.',
@@ -223,7 +226,7 @@ def get_measure_column_names(data_column_info_dict: dict,
                 measure_column_names.append(data_column_info_dict[user_input])
                 break
         user_input: str = '' 
-        OutputClass.info('Type a Element Column Number and hit enter. Type done to finish.')
+        OutputClass.process('Type a Element Column Number and hit enter. Type done to finish.')
         while user_input != 'done':
             user_input = InputClass.get_inp('Element Column Numbers')
             if user_input.lower() != 'done':
@@ -371,7 +374,7 @@ def apply_full_masking(unmasked_data: pd.DataFrame,
                 masked_cell_index[row_index_enum].append(column_name_enum)
  
     # 2) Vertical masking procedure for subcategories
-    # This routine requires at least on Subcategory Column
+    # This routine requires at least one Subcategory Column
     if len(subcategory_column_names) >= 1:
         partition_column_values_comb = list(unmasked_data[partition_column_names].drop_duplicates().reset_index(drop = True).values)
         subcategory_column_names_subset_comb = list(itertools.combinations(subcategory_column_names, len(subcategory_column_names)-1))
@@ -386,18 +389,26 @@ def apply_full_masking(unmasked_data: pd.DataFrame,
                     for subcategory_column_names_subset_enum, subcategory_column_names_subset_value in enumerate(subcategory_column_names_subset):
                         partioned_subcategoried_data = partioned_subcategoried_data.loc[partioned_subcategoried_data[subcategory_column_names_subset_value] == subcategoryu_column_values_subset[subcategory_column_names_subset_enum]]
                     temp_index_list = partioned_subcategoried_data.index.values
-                    for column_enum in measure_column_names:
+                    for column_name_enum in measure_column_names:
                         temp_cond = True
                         while temp_cond:
                             try:
-                                temp_value_list = partioned_subcategoried_data[column_enum].values
+                                temp_value_list = partioned_subcategoried_data[column_name_enum].values
                                 n2mins = heapq.nsmallest(2, [i for i in temp_value_list if i != 0])
                                 n1min= min(n2mins)
+                                '''
+                                temp_hist_list = list(itertools.chain.from_iterable([masked_cell_index.get(key) \
+                                                                                            for key in partioned_subcategoried_data[column_name_enum].index]))
+                                for temp_value_enum, temp_value in enumerate(temp_value_list):
+                                    if column_name_enum in temp_hist_list and temp_value == n1min:
+                                        masked_cell_index[temp_index_list[temp_value_enum]].append(column_name_enum)
+                                '''                                                           
                                 if n1min <= GlobalMaskingPol().gmp_msk_max:
                                     for temp_value_enum, temp_value in enumerate(temp_value_list):
-                                        if temp_value in n2mins \
-                                            and column_enum not in masked_cell_index[temp_index_list[temp_value_enum]]:
-                                            masked_cell_index[temp_index_list[temp_value_enum]].append(column_enum)
+                                        if n1min <= GlobalMaskingPol().gmp_msk_max:
+                                            if temp_value in n2mins \
+                                                and column_name_enum not in masked_cell_index[temp_index_list[temp_value_enum]]:
+                                                masked_cell_index[temp_index_list[temp_value_enum]].append(column_name_enum)
                                 break
                             except ValueError:
                                 temp_cond = False
