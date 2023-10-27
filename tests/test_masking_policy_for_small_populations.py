@@ -5,7 +5,7 @@ import os
 from typing import Any, Iterator
 from _pytest.monkeypatch import MonkeyPatch
 from csv_diff import load_csv, compare
-from src.masking_policy_for_small_populations import masking_policy_for_small_populations
+import masking_policy_for_small_populations
 
 def test_full_run(monkeypatch: MonkeyPatch) -> None:
     '''
@@ -14,12 +14,12 @@ def test_full_run(monkeypatch: MonkeyPatch) -> None:
     Args:
         monkeypatch (_type_): _description_
     '''
-    def mock_return() -> str:
-        return f'{os.getcwd()}/tests/dummy_data.csv'
+    #def mock_return() -> str:
+    #    return f'{os.getcwd()}/tests/dummy_data.csv'
 
-    monkeypatch.setattr(masking_policy_for_small_populations.import_unmasked_data, mock_return)
-#    dummy_file_path = f'{os.getcwd()}/tests/dummy_data.csv'
-#    masking_policy_for_small_populations.import_unmasked_data(dummy_file_path)
+    #monkeypatch.setattr('masking_policy_for_small_populations.import_unmasked_data', mock_return)
+    dummy_file_path = f'{os.getcwd()}/tests/dummy_data.csv'
+    masking_policy_for_small_populations.import_unmasked_data(dummy_file_path)
 
     responses: list[str] = []
     responses.append('1')

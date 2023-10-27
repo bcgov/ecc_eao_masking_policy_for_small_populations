@@ -23,7 +23,7 @@ import pandas as pd
 import numpy as np
 
 # User-defined libraries
-from masking_policy_for_small_populations_lib import terminal_interactions
+from  terminal_interactions import InputClass, OutputClass
 
 class GlobalMaskingPol:
     '''
