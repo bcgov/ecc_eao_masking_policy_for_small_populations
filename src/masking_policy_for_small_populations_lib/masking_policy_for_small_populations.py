@@ -15,7 +15,7 @@ Module providing masking capabilities for a chosen data file.
 '''
 # Standard libraries
 import heapq
-import os, sys
+import os
 import itertools
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
@@ -23,7 +23,7 @@ import pandas as pd
 import numpy as np
 
 # User-defined libraries
-from terminal_interactions import OutputClass, InputClass
+from masking_policy_for_small_populations_lib import terminal_interactions
 
 class GlobalMaskingPol:
     '''
