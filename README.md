@@ -5,4 +5,4 @@
     pip install ./dist/ecc_eao_masking_policy_for_small_populations-1.0.tar.gz
 
 # Running
-    Run .\src\masking_policy_for_small_populations_lib/masking_policy_for_small_populations.py
+    Run ./src/masking_policy_for_small_populations_lib/masking_policy_for_small_populations.py
