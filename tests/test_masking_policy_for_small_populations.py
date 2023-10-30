@@ -21,7 +21,7 @@ def test_full_run(monkeypatch: MonkeyPatch) -> None:
     
     def mock_return() -> str:
         return f'{os.getcwd()}/tests/dummy_data_mea_col_rel_0.csv'
-    monkeypatch.setattr('masking_policy_for_small_populations.main_loop', mock_return)
+    monkeypatch.setattr('masking_policy_for_small_populations.import_unmasked_data', mock_return)
     responses: list[str] = []
     responses.append('1')
     responses.append('2')
@@ -36,11 +36,11 @@ def test_full_run(monkeypatch: MonkeyPatch) -> None:
     responses.append('8')
     responses.append('9')
     responses.append('done')
+    responses.append('n')
     response_iterator: Iterator[str] = iter(responses)
     monkeypatch.setattr('builtins.input', lambda msg: next(response_iterator))
-    monkeypatch.setattr('masking_policy_for_small_populations.export', mock_return)
     masking_policy_for_small_populations.main_loop()
-
+    '''
     infile_01_filename:str = f'{os.getcwd()}/tests/dummy_data_mea_col_rel_0_Masked.csv'
     infile_02_filename:str = f'{os.getcwd()}/tests/dummy_data_mea_col_rel_0_Masked_Actual.csv'
 
@@ -52,7 +52,7 @@ def test_full_run(monkeypatch: MonkeyPatch) -> None:
             )
             print(diff)
 
-    '''
+    
     def mock_return() -> str:
     
         return f'{os.getcwd()}/tests/dummy_data_mea_col_rel_1.csv'
