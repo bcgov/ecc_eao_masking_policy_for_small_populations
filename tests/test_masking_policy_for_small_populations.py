@@ -36,7 +36,6 @@ def test_full_run(monkeypatch: MonkeyPatch) -> None:
     responses.append('8')
     responses.append('9')
     responses.append('done')
-    responses.append('n')
     response_iterator: Iterator[str] = iter(responses)
     monkeypatch.setattr('builtins.input', lambda msg: next(response_iterator))
     masking_policy_for_small_populations.main_loop()
