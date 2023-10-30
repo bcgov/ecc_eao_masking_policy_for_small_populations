@@ -33,6 +33,7 @@ class GlobalMaskingPol:
         self.gmp_msk_max = 9
         self.gmp_msk_min = 1
 
+
 def import_unmasked_data(file_path:str = None) -> tuple[str, pd.DataFrame]:
     '''
     Importing unmasked data from a CSV or XLSX file into a Pandas dataframe

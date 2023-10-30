@@ -123,7 +123,7 @@ class OutputClass:
               '#                                                                               #\n'
               '#-------------------------------------------------------------------------------#\n'
               '#                                                                               #\n'
-              '#          Welcome to Masking Policut for Small Populations Rotuine!            #\n'
+              '#          Welcome to Masking Policy for Small Populations Rotuine!             #\n'
               '#                                                                               #\n'
               '#                                  Version 1.0                                  #\n'
               '#                                                                               #\n'
