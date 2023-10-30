@@ -1,6 +1,6 @@
 [project]
 name = 'ecc_eao_masking_policy_for_small_populations'
-version = '0.0.1'
+version = '1.0'
 authors = [
   { name='Education Analytics Branch, Ministry of Education and Child Care, Government of British Columbia', email='educ.systemperformance@gov.bc.ca' }
 ]

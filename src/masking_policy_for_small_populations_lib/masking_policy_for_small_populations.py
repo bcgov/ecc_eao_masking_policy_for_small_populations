@@ -33,7 +33,7 @@ class GlobalMaskingPol:
         self.gmp_msk_max = 9
         self.gmp_msk_min = 1
 
-def import_unmasked_data(file_path:str = None) -> pd.DataFrame:
+def import_unmasked_data(file_path:str = None) -> tuple[str, pd.DataFrame]:
     '''
     Importing unmasked data from a CSV or XLSX file into a Pandas dataframe
 
@@ -51,8 +51,8 @@ def import_unmasked_data(file_path:str = None) -> pd.DataFrame:
     if os.path.splitext(file_path)[1] in ['.csv', '.CSV']:
         unmasked_data: pd.DataFrame = pd.read_csv(file_path)
     if os.path.splitext(file_path)[1] in ['.xlsx', '.XLSX']:
-        sheet_name = InputClass.get_inp('Excel sheet name')
-        unmasked_data: pd.DataFrame = pd.read_excel(file_path, sheetname = sheet_name)
+        unmasked_data: pd.DataFrame = pd.read_excel(file_path)
+
     return file_path, unmasked_data    
 
 def export_masked_data(masked_data: pd.DataFrame, input_file_path: str) -> None:
@@ -478,7 +478,7 @@ def main_loop() -> None:
     Main program execution
     '''
     OutputClass()
-    input_file_path, unmasked_data = import_unmasked_data()
+    input_file_path,  unmasked_data = import_unmasked_data()
     masked_data = apply_full_masking(unmasked_data)
     export_masked_data(masked_data, input_file_path)
 
